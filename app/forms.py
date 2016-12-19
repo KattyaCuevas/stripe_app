@@ -12,7 +12,6 @@ class RegisterUser(forms.ModelForm):
             'username',
             'password',
             'email',
-            # 'plan',
         ]
         labels = {
             'first_name': 'Nombres',
@@ -20,7 +19,6 @@ class RegisterUser(forms.ModelForm):
             'username': 'Username',
             'password': 'Contraseña',
             'email': 'Email',
-            # 'plan': 'Plan',
         }
         widgets = {
             'first_name': forms.TextInput(),
@@ -28,9 +26,8 @@ class RegisterUser(forms.ModelForm):
             'username': forms.TextInput(),
             'password':  forms.PasswordInput(),
             'email': forms.EmailInput(),
-            # 'plan',
         }
-        # password = forms.CharField(max_length=128)
-        # email = forms.EmailField( max_length=254)
-        # stripe_id = forms.CharField(max_length=20)
-        # plan = forms.CharField(max_length=100)
+
+class LoginUser(forms.Form):
+    username = forms.CharField(label='Username')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
