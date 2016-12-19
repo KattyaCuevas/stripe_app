@@ -1,0 +1,6 @@
+<form action="{% url 'app:register' %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button type="submit">Enviar</button>
+</form>
