@@ -6,7 +6,7 @@ $(function() {
       $form.find('.submit').prop('disabled', false);
     } else {
       var token = response.id;
-      $form.append($('<input type="hidden" name="stripeToken">').val(token));
+      $form.append($('<input type="hidden" name="stripe_token">').val(token));
       $form.get(0).submit();
     }
   };

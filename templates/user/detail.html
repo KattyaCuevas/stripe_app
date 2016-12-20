@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>{{ user.get_full_name }}</h1>
-  {{ user.email }}
+  {{ user.stripe_id }}
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
   <ul>
     Payments
