@@ -10,7 +10,10 @@ def index(request):
     return render(request, 'user/index.html')
 
 def detail(request):
-    user = get_object_or_404(StripeUser, pk=request.session['user_id'])
+    try:
+        user = StripeUser.objects.get(pk=request.session['user_id'])
+    except:
+        return redirect('app:login')
     return render(request, 'user/detail.html', {'user': user})
 
 class RegisterView(View):
@@ -37,8 +40,14 @@ class LoginView(View):
             request.session['user_id'] = user.pk
             return redirect('app:detail')
         else:
+            form.add_error(None, 'Incorrect username or password')
             return render(request, 'user/login.html', { 'form': form })
 
     def get(self, request):
         form = LoginUser()
         return render(request, 'user/login.html', { 'form': form })
+
+class LogoutView(View):
+    def post(self, request):
+        request.session['user_id'] = None
+        return redirect('app:login')
