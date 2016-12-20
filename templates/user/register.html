@@ -1,6 +1,10 @@
-<form action="{% url 'app:register' %}" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
+{% extends  'base/base.html' %}
+{% block title %} Registro de usuario {% endblock %}
+{% block content %}
+  <form action="{% url 'app:register' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-  <button type="submit">Enviar</button>
-</form>
+    <button type="submit">Enviar</button>
+  </form>
+{% endblock %}

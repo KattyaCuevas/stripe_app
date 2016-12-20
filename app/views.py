@@ -4,17 +4,23 @@ from django.contrib.auth import authenticate
 
 from .models import StripeUser
 from .forms import RegisterUser, LoginUser
+import webapp.settings as settings
 
 # Create your views here.
-def index(request):
-    return render(request, 'user/index.html')
-
 def detail(request):
     try:
         user = StripeUser.objects.get(pk=request.session['user_id'])
     except:
         return redirect('app:login')
     return render(request, 'user/detail.html', {'user': user})
+
+class StripeView(View):
+    def get(self, request):
+        return render(request, 'user/stripe.html', {'publishable': settings.STRIPE_PUBLISHABLE})
+
+    def post(self, request):
+        print(request.POST)
+        return render(request, 'user/stripe.html', {'publishable': settings.STRIPE_PUBLISHABLE})
 
 class RegisterView(View):
     def post(self, request):

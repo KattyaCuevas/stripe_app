@@ -1,7 +1,10 @@
-{{ message }}
-<form action="{% url 'app:login' %}" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
+{% extends  'base/base.html' %}
+{% block title %} Login {% endblock %}
+{% block content %}
+  <form action="{% url 'app:login' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-  <button type="submit">Enviar</button>
-</form>
+    <button type="submit">Enviar</button>
+  </form>
+{% endblock %}

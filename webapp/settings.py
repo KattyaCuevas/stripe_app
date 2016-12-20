@@ -119,4 +119,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 AUTH_USER_MODEL = 'app.StripeUser'
+
+# Stripe keys
+STRIPE_SECRET = 'sk_test_53vPqxsKTCZERrcatdgTFtnn'
+STRIPE_PUBLISHABLE = 'pk_test_gel6NIsu3Eo3NMMQj0I9efLF'
