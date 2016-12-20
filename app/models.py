@@ -19,8 +19,12 @@ class StripeUser(AbstractUser):
         self.save()
 
     def subscribe(self, plan):
+        if self.plan:
+            customer = stripe.Customer.retrieve(self.stripe_id)
+            subscriptions = stripe.Subscription.list(customer=self.stripe_id)
+            customer.subscriptions.retrieve(subscriptions.data[0].id).delete()
         new_plan = stripe.Subscription.create(customer=self.stripe_id, plan=plan)
-        self.plan = new_plan
+        self.plan = plan
         self.save()
 
 class Payment(models.Model):
