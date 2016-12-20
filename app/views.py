@@ -37,10 +37,7 @@ class SubscriptionStripeView(LoginRequiredMixin, View):
         return render(request, 'user/subscription.html')
 
     def post(self, request):
-        try:
-            user = StripeUser.objects.get(pk=request.session['user_id'])
-        except:
-            return redirect('app:login')
+        user = request.user
         if not user.stripe_id:
             return redirect('app:stripe')
         else:

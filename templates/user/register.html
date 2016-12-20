@@ -1,10 +1,17 @@
 {% extends  'base/base.html' %}
 {% block title %} Registro de usuario {% endblock %}
+{% block header %}{% endblock %}
 {% block content %}
-  <form action="{% url 'app:register' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+  <div class="card">
+    <h2>Registrarse</h2>
+    <form action="{% url 'app:register' %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
 
-    <button type="submit">Enviar</button>
-  </form>
+      <button type="submit">Registrarse</button>
+    </form>
+    <div class="links">
+      <a href="/user/login">Iniciar sesión</a>
+    </div>
+  </div>
 {% endblock %}

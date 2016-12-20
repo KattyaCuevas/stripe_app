@@ -12,7 +12,15 @@
   </head>
   <body>
     {% block header %}
-      <h1>Stripe App</h1>
+      <header>
+        <div class="container">
+          <h1>Stripe App</h1>
+          <form action="{% url 'app:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Cerrar sesión</button>
+          </form>
+        </div>
+      </header>
     {% endblock %}
 
     {% block content %}

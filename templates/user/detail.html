@@ -1,18 +1,49 @@
 {% extends  'base/base.html' %}
 
 {% block content %}
-  <h1>{{ user.get_full_name }}</h1>
-  {{ user.stripe_id }}
-  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-  <ul>
-    Payments
-    {% for payment in user.payment_set.all %}
-    <li>{{ payment }}</li>
-    {% endfor %}
-  </ul>
+  <div class="container">
+    <div>
+      <b>Nombres:</b>
+      <span>{{ user.first_name }}</span>
+    </div>
 
-  <form action="{% url 'app:logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Cerrar sesión</button>
-  </form>
+    <div>
+      <b>Apellidos:</b>
+      <span>{{ user.last_name }}</span>
+    </div>
+
+    <div>
+      <b>Username:</b>
+      <span>{{ user.username }}</span>
+    </div>
+
+    <div>
+      <b>Stripe:</b>
+      <span>{{ user.stripe_id }}</span>
+    </div>
+
+    <div>
+      <b>Plan de suscripción:</b>
+      <span>{{ user.plan }}</span>
+      <a href="/user/subscription">Cambiar de suscripción</a>
+    </div>
+
+    <b>Pagos</b>
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Monto</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for payment in user.payment_set.all %}
+        <tr>
+          <td>{{ payment.date }}</td>
+          <td>{{ payment.amount }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

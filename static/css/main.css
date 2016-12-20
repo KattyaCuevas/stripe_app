@@ -6,4 +6,54 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-*, *:before, *:after { box-sizing: inherit }
+*, *:before, *:after { box-sizing: inherit; }
+
+body {
+  background-color: #EBEFF1;
+  margin: 0px;
+}
+
+header {
+  background-color: #2856B6;
+  color: #fff;
+}
+header a {
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+header h1 { margin: 0; }
+header .container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 100px auto;
+  max-width: 450px;
+  padding: 50px;
+}
+.card button {
+  margin: 16px 0;
+  padding: 7px;
+}
+.card form {
+  display: flex;
+  flex-flow: column;
+  margin-bottom: 30px;
+}
+.card form p {
+  display: flex;
+  flex-flow: column;
+}
+.card h2 { text-align: center; }
+.card input { padding: 5px; }
+.card .links { text-align: end; }
