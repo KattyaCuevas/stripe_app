@@ -1,9 +1,13 @@
 {% extends  'base/base.html' %}
 {% block content %}
-  <form action="{% url 'app:subscription' %}" method="post">
-    {% csrf_token %}
-    <input type="radio" name="suscription_plan" value="mensual" checked> Suscripción mensual<br>
-    <input type="radio" name="suscription_plan" value="anual"> Suscripción anual<br>
-    <input type="submit" value="Seleccionar">
-  </form>
+  <div class="container">
+    <h2>Suscripciones:</h2>
+    <form action="{% url 'app:subscription' %}" method="post">
+      {% csrf_token %}
+      <input type="radio" name="suscription_plan" value="anual"> Suscripción anual<br>
+      <input type="radio" name="suscription_plan" value="mensual" checked> Suscripción mensual<br>
+      <input type="radio" name="suscription_plan" value="gratuito"> Gratis<br>
+      <input type="submit" value="Seleccionar">
+    </form>
+  </div>
 {% endblock %}
