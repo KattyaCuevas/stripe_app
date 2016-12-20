@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 
 from .models import StripeUser
@@ -9,14 +9,15 @@ from .forms import RegisterUser, LoginUser
 import webapp.settings as settings
 from decimal import Decimal
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-def detail(request):
-    try:
-        user = StripeUser.objects.get(pk=request.session['user_id'])
-    except:
-        return redirect('app:login')
-    return render(request, 'user/detail.html', {'user': user})
+class DetailView(LoginRequiredMixin, View):
+    login_url = '/user/login/'
+    redirect_field_name = 'redirect_to'
+
+    def get(self, request):
+        return render(request, 'user/detail.html', {'user': request.user})
 
 class CaptureStripeView(View):
     def post(self, request):
@@ -28,7 +29,10 @@ class CaptureStripeView(View):
         user.payment_set.create(amount=Decimal(event_json['data']['object']['amount'])/100)
         return HttpResponse(status=200)
 
-class SubscriptionStripeView(View):
+class SubscriptionStripeView(LoginRequiredMixin, View):
+    login_url = '/user/login/'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         return render(request, 'user/subscription.html')
 
@@ -43,7 +47,10 @@ class SubscriptionStripeView(View):
             user.subscribe(request.POST['suscription_plan'])
             return redirect('app:detail')
 
-class CardStripeView(View):
+class CardStripeView(LoginRequiredMixin, View):
+    login_url = '/user/login/'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         return render(request, 'user/stripe.html', {'publishable': settings.STRIPE_PUBLISHABLE})
 
@@ -76,7 +83,7 @@ class LoginView(View):
         form = LoginUser(request.POST)
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
-            request.session['user_id'] = user.pk
+            login(request, user)
             return redirect('app:detail')
         else:
             form.add_error(None, 'Incorrect username or password')
@@ -88,5 +95,5 @@ class LoginView(View):
 
 class LogoutView(View):
     def post(self, request):
-        request.session['user_id'] = None
+        logout(request)
         return redirect('app:login')
