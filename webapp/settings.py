@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'docker',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'stripe',
+        'USER': 'stripe',
+        'PASSWORD': 'password',
+        'PORT': '',
+        'HOST': 'mydb',
     }
 }
 

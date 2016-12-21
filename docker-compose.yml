@@ -1,15 +1,15 @@
 version: "2"
 
 services:
-  db:
+  mydb:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: docker
-      MYSQL_DATABASE: docker
-      MYSQL_USER: kattya
+      MYSQL_ROOT_PASSWORD: stripe
+      MYSQL_DATABASE: stripe
+      MYSQL_USER: stripe
       MYSQL_PASSWORD: password
     volumes:
-      - db_data:/var/lib/mysql
+      - /var/lib/mysql
 
   web:
     build: .
@@ -19,7 +19,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - mydb
 
 volumes:
   db_data:
