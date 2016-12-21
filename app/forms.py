@@ -20,13 +20,7 @@ class RegisterUser(forms.ModelForm):
             'password': 'Contraseña',
             'email': 'Email',
         }
-        widgets = {
-            'first_name': forms.TextInput(),
-            'last_name': forms.TextInput(),
-            'username': forms.TextInput(),
-            'password':  forms.PasswordInput(),
-            'email': forms.EmailInput(),
-        }
+        widgets = { 'password':  forms.PasswordInput() }
 
 class LoginUser(forms.Form):
     username = forms.CharField(label='Username')
