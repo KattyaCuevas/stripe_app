@@ -1,33 +1,36 @@
 {% extends  'base/base.html' %}
 {% block content %}
-  <form action="{% url 'app:stripe' %}" method="post" id="payment-form">
-    {% csrf_token %}
-    <span class="payment-errors"></span>
+  <div class="container">
+    <h2>Tarjeta de crédito</h2>
+    <form action="{% url 'app:stripe' %}" method="post" id="payment-form">
+      {% csrf_token %}
+      <span class="payment-errors"></span>
 
-    <div class="form-row">
-      <label>
-        <span>Tarjeta de crédito</span>
-        <input type="text" size="20" data-stripe="number">
-      </label>
-    </div>
+      <div class="form-row">
+        <label>
+          <span>Tarjeta de crédito</span>
+          <input type="text" size="20" data-stripe="number">
+        </label>
+      </div>
 
-    <div class="form-row">
-      <label>
-        <span>Expiración (MM/AA)</span>
-        <input type="text" size="2" data-stripe="exp_month">
-      </label>
-      <span> / </span>
-      <input type="text" size="2" data-stripe="exp_year">
-    </div>
+      <div class="form-row">
+        <label>
+          <span>Expiración (MM/AA)</span>
+          <input type="text" size="2" data-stripe="exp_month">
+        </label>
+        <span> / </span>
+        <input type="text" size="2" data-stripe="exp_year">
+      </div>
 
-    <div class="form-row">
-      <label>
-        <span>CVC</span>
-        <input type="text" size="4" data-stripe="cvc">
-      </label>
-    </div>
+      <div class="form-row">
+        <label>
+          <span>CVC</span>
+          <input type="text" size="4" data-stripe="cvc">
+        </label>
+      </div>
 
 
-    <input type="submit" class="submit" value="Submit Payment">
-  </form>
+      <input type="submit" class="submit" value="Submit Payment">
+    </form>
+  </div>
 {% endblock %}

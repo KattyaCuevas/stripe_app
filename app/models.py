@@ -30,7 +30,7 @@ class StripeUser(AbstractUser):
 
 class Payment(models.Model):
     date = models.DateTimeField(default=datetime.datetime.now)
-    amount = models.DecimalField(max_digits=4, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     user = models.ForeignKey(StripeUser, on_delete=models.CASCADE)
 
     def __str__(self):
