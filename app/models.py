@@ -8,6 +8,7 @@ import stripe
 stripe.api_key = settings.STRIPE_SECRET
 class StripeUser(AbstractUser):
     stripe_id = models.CharField(max_length=20)
+    subscription_id = models.CharField(max_length=50)
     plan = models.CharField(max_length=100)
 
     def __str__(self):
@@ -21,12 +22,15 @@ class StripeUser(AbstractUser):
     def subscribe(self, plan):
         if plan != 'gratuito':
             new_plan = stripe.Subscription.create(customer=self.stripe_id, plan=plan)
-            if self.plan:
+            if self.subscription_id:
                 customer = stripe.Customer.retrieve(self.stripe_id)
-                subscriptions = stripe.Subscription.list(customer=self.stripe_id)
-                customer.subscriptions.retrieve(subscriptions.data[0].id).delete()
+                customer.subscriptions.retrieve(self.subscription_id).delete()
+            self.subscription_id = new_plan['id']
+        else:
+            self.subscription_id = ''
         self.plan = plan
         self.save()
+
 
 class Payment(models.Model):
     date = models.DateTimeField(default=datetime.datetime.now)

@@ -1,36 +1,47 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views import View
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from decimal import Decimal
+import json
 
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+
+import webapp.settings as settings
 from .models import StripeUser
 from .forms import RegisterUser, LoginUser
 
-import webapp.settings as settings
-from decimal import Decimal
-import json
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
 class UserDetailView(LoginRequiredMixin, View):
-    login_url = '/user/login/'
+    """
+    Show detail of user profile
+    """
+    login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
     def get(self, request):
         return render(request, 'user/detail.html', {'user': request.user})
 
+
 @method_decorator(csrf_exempt, name='dispatch')
 class StripeWebhookView(View):
+    """
+    Get json of stripe webhook when charge is succeeded
+    """
     def post(self, request):
         event_json = json.loads(request.body.decode('utf-8'))
         user = StripeUser.objects.get(stripe_id=event_json['data']['object']['customer'])
         user.payment_set.create(amount=Decimal(event_json['data']['object']['amount'])/100)
         return HttpResponse(status=200)
 
+
 class StripeSubscriptionView(LoginRequiredMixin, View):
-    login_url = '/user/login/'
+    """
+    Get json of stripe webhook when charge is succeeded
+    """
+    login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
     def get(self, request):
@@ -44,22 +55,26 @@ class StripeSubscriptionView(LoginRequiredMixin, View):
             user.subscribe(request.POST['suscription_plan'])
             return redirect('app:detail')
 
+
 class StripeCardView(LoginRequiredMixin, View):
-    login_url = '/user/login/'
+    """
+    Create new stripe token based on a card data
+    """
+    login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
     def get(self, request):
         return render(request, 'user/stripe.html', {'publishable': settings.STRIPE_PUBLISHABLE})
 
     def post(self, request):
-        try:
-            user = StripeUser.objects.get(pk=request.session['user_id'])
-        except:
-            return redirect('app:login')
-        user.create_account(request.POST['stripe_token'])
+        request.user.create_account(request.POST['stripe_token'])
         return redirect('app:detail')
 
+
 class UserSignupView(View):
+    """
+    Create new user
+    """
     def post(self, request):
         form = RegisterUser(request.POST)
         if form.is_valid():
@@ -75,7 +90,11 @@ class UserSignupView(View):
         form = RegisterUser()
         return render(request, 'user/register.html', { 'form': form })
 
+
 class UserSigninView(View):
+    """
+    Sign in for an existent user
+    """
     def post(self, request):
         form = LoginUser(request.POST)
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -89,6 +108,7 @@ class UserSigninView(View):
     def get(self, request):
         form = LoginUser()
         return render(request, 'user/login.html', { 'form': form })
+
 
 class UserSignoutView(View):
     def post(self, request):
