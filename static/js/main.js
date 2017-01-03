@@ -18,4 +18,10 @@ $(function() {
     Stripe.card.createToken($form, stripeResponseHandler);
     return false;
   });
+
+  $('a.subscription').click(function (event) {
+    event.preventDefault();
+    $('.modal').fadeIn();
+  });
+  $('.modal').click(function (e) { if (e.target == $('.modal')[0]) $('.modal').fadeOut(); });
 });

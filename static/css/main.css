@@ -29,6 +29,7 @@ header .container {
   justify-content: space-between;
   padding: 20px 0;
 }
+section.container { padding-top: 30px; }
 .container {
   max-width: 1000px;
   margin: 0 auto;
@@ -57,3 +58,52 @@ header .container {
 .card h2 { text-align: center; }
 .card input { padding: 5px; }
 .card .links { text-align: end; }
+
+.btn {
+  border: 1px solid;
+  border-radius: 5px;
+  color: #2856B6;
+  padding: 5px 10px;
+  position: absolute;
+  right: 0;
+  text-decoration: none;
+  top: -5px;
+}
+.btn:hover {
+  background-color: #4A78D8;
+  color: white;
+}
+
+.detail {
+  display: flex;
+  margin: 15px 0;
+  max-width: 600px;
+  position: relative;
+}
+.detail * { flex: 1; }
+.modal {
+  background-color: rgba(0,0,0,0.7);
+  display: none;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.modal form label { padding: 10px; }
+
+table {
+  border-spacing: 0;
+  margin-top: 10px;
+  max-width: 600px;
+  width: 100%;
+}
+table * { padding: 8px 10px; }
+thead {
+  background-color: #4A78D8;
+  color: white;
+}
+tbody td {
+  border-bottom: 1px solid #4A78D8;
+}

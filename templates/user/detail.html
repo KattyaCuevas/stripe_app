@@ -1,49 +1,74 @@
 {% extends  'base/base.html' %}
 
 {% block content %}
-  <div class="container">
-    <div>
+  <section class="container">
+    <h2>Datos personales</h2>
+    <hr>
+    <div class="detail">
       <b>Nombres:</b>
       <span>{{ user.first_name }}</span>
     </div>
 
-    <div>
+    <div class="detail">
       <b>Apellidos:</b>
       <span>{{ user.last_name }}</span>
     </div>
 
-    <div>
+    <div class="detail">
       <b>Username:</b>
       <span>{{ user.username }}</span>
     </div>
 
-    <div>
+    <div class="detail">
       <b>Stripe:</b>
       <span>{{ user.stripe_id }}</span>
     </div>
+    <br>
 
-    <div>
+    <h2>Suscripción</h2>
+    <hr>
+    <div class="detail">
       <b>Plan de suscripción:</b>
       <span>{{ user.plan.capitalize }}</span>
-      <a href="/subscription">Cambiar de suscripción</a>
+      <a class="btn subscription">Cambiar de suscripción</a>
     </div>
 
-    <b>Pagos</b>
-    <table>
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Monto</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for payment in user.payment_set.all %}
-        <tr>
-          <td>{{ payment.date }}</td>
-          <td>{{ payment.amount }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div>
+      <b>Pagos</b>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in user.payment_set.all %}
+          <tr>
+            <td>{{ payment.date }}</td>
+            <td>{{ payment.amount }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <div class="modal">
+    <div class="card">
+      <h2>Suscripciones:</h2>
+      <form action="{% url 'app:subscription' %}" method="post">
+        {% csrf_token %}
+        <label for="">
+          <input type="radio" name="suscription_plan" value="anual"> Suscripción anual
+        </label>
+        <label for="">
+          <input type="radio" name="suscription_plan" value="mensual" checked> Suscripción mensual
+        </label>
+        <label for="">
+          <input type="radio" name="suscription_plan" value="gratuito"> Gratis (Quitar suscripción automática)
+        </label>
+        <input type="submit" value="Seleccionar">
+      </form>
+    </div>
   </div>
 {% endblock %}
